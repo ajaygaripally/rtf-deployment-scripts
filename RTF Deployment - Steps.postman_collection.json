@@ -1,0 +1,516 @@
+{
+	"info": {
+		"_postman_id": "a835a9a4-94a7-4a53-afb5-ce25a52a1f18",
+		"name": "RTF Deployment - Steps",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Binary",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "User-Agenthost",
+						"value": "Apache-Maven/3.6.2 (Java 1.8.0_222; Mac OS X 10.14.6)",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Host",
+						"value": "maven.anypoint.mulesoft.com",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "file",
+					"file": {
+						"src": "{{fileLocation}}/{{applicationName}}.jar"
+					}
+				},
+				"url": {
+					"raw": "https://maven.anypoint.mulesoft.com/api/v1/organizations/{{orgId}}/maven/{{orgId}}/{{applicationName}}/{{applicationVersion}}/{{applicationName}}-{{applicationVersion}}-mule-application.jar",
+					"protocol": "https",
+					"host": [
+						"maven",
+						"anypoint",
+						"mulesoft",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"organizations",
+						"{{orgId}}",
+						"maven",
+						"{{orgId}}",
+						"{{applicationName}}",
+						"{{applicationVersion}}",
+						"{{applicationName}}-{{applicationVersion}}-mule-application.jar"
+					]
+				},
+				"description": "API To put pom in exchange "
+			},
+			"response": []
+		},
+		{
+			"name": "2. POM",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "User-Agenthost",
+						"value": "Apache-Maven/3.6.2 (Java 1.8.0_222; Mac OS X 10.14.6)",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Host",
+						"value": "maven.anypoint.mulesoft.com",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "file",
+					"file": {
+						"src": "{{fileLocation}}/pom.xml"
+					}
+				},
+				"url": {
+					"raw": "https://maven.anypoint.mulesoft.com/api/v1/organizations/{{orgId}}/maven/{{orgId}}/{{applicationName}}/{{applicationVersion}}/{{applicationName}}-{{applicationVersion}}.pom",
+					"protocol": "https",
+					"host": [
+						"maven",
+						"anypoint",
+						"mulesoft",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"organizations",
+						"{{orgId}}",
+						"maven",
+						"{{orgId}}",
+						"{{applicationName}}",
+						"{{applicationVersion}}",
+						"{{applicationName}}-{{applicationVersion}}.pom"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3. All RTF Agents",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://anypoint.mulesoft.com/workercloud/api/organizations/{{orgId}}/agents",
+					"protocol": "https",
+					"host": [
+						"anypoint",
+						"mulesoft",
+						"com"
+					],
+					"path": [
+						"workercloud",
+						"api",
+						"organizations",
+						"{{orgId}}",
+						"agents"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4. Agent Details",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://anypoint.mulesoft.com/runtimefabric/api/organizations/{{orgId}}/targets/{{targetId}}",
+					"protocol": "https",
+					"host": [
+						"anypoint",
+						"mulesoft",
+						"com"
+					],
+					"path": [
+						"runtimefabric",
+						"api",
+						"organizations",
+						"{{orgId}}",
+						"targets",
+						"{{targetId}}"
+					]
+				},
+				"description": "API to get details on target id to check it is safe to deploy api to it"
+			},
+			"response": []
+		},
+		{
+			"name": "5. Deployment",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"key": "X-ANYPNT-ENV-ID",
+						"type": "text",
+						"value": "{{envId}}"
+					},
+					{
+						"key": "X-ANYPNT-ORG-ID",
+						"type": "text",
+						"value": "{{orgId}}"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"name\":\"{{applicationName}}\",\n   \"application\":{\n      \"ref\":{\n         \"groupId\":\"{{orgId}}\",\n         \"artifactId\":\"{{applicationName}}\",\n         \"version\":\"{{applicationVersion}}\",\n         \"packaging\":\"jar\"\n      },\n      \"desiredState\":\"STARTED\",\n      \"configuration\":{\n         \"mule.agent.application.properties.service\":{\n            \"properties\":{\n               \"mule.env\":\"development\",\n               \"name\":\"john\"\n            },\n            \"applicationName\":\"{{applicationName}}\"\n         }\n      }\n   },\n   \"target\":{\n      \"targetId\":\"{{targetId}}\",\n      \"provider\":\"MC\",\n      \"deploymentSettings\":{\n         \"runtimeVersion\":\"4.2.1:v1.2.19\",\n         \"replicationFactor\":2,\n         \"memoryReserved\":\"3000Mi\",\n         \"memoryMax\":\"3000Mi\",\n         \"cpuReserved\":\"500m\",\n         \"cpuMax\":\"500m\",\n         \"publicUrl\":\"https://{{RTFCNAME}}/{{applicationName}}\",\n         \"lastMileSecurity\":false,\n         \"clusteringEnabled\":false\n      }\n   }\n}"
+				},
+				"url": {
+					"raw": "https://anypoint.mulesoft.com/hybrid/api/v2/organizations/{{orgId}}/environments/{{envId}}/deployments",
+					"protocol": "https",
+					"host": [
+						"anypoint",
+						"mulesoft",
+						"com"
+					],
+					"path": [
+						"hybrid",
+						"api",
+						"v2",
+						"organizations",
+						"{{orgId}}",
+						"environments",
+						"{{envId}}",
+						"deployments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "6. Get Deployments",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					},
+					{
+						"key": "X-ANYPNT-ORG-ID",
+						"value": "{{orgId}}",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "X-ANYPNT-ENV-ID",
+						"value": "{{envId}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://anypoint.mulesoft.com/hybrid/api/v2/organizations/{{orgId}}/environments/{{envId}}/deployments",
+					"protocol": "https",
+					"host": [
+						"anypoint",
+						"mulesoft",
+						"com"
+					],
+					"path": [
+						"hybrid",
+						"api",
+						"v2",
+						"organizations",
+						"{{orgId}}",
+						"environments",
+						"{{envId}}",
+						"deployments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "7. Deployment Details",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://anypoint.mulesoft.com/hybrid/api/v2/organizations/{{orgId}}/environments/{{envId}}/deployments/{{deploymentId}}",
+					"protocol": "https",
+					"host": [
+						"anypoint",
+						"mulesoft",
+						"com"
+					],
+					"path": [
+						"hybrid",
+						"api",
+						"v2",
+						"organizations",
+						"{{orgId}}",
+						"environments",
+						"{{envId}}",
+						"deployments",
+						"{{deploymentId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "8. Re-Deployment",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					},
+					{
+						"key": "X-ANYPNT-ENV-ID",
+						"value": "{{envId}}",
+						"type": "text"
+					},
+					{
+						"key": "X-ANYPNT-ORG-ID",
+						"value": "{{orgId}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"name\":\"{{applicationName}}\",\n   \"application\":{\n      \"ref\":{\n         \"groupId\":\"{{orgId}}\",\n         \"artifactId\":\"{{applicationName}}\",\n         \"version\":\"{{applicationVersion}}\",\n         \"packaging\":\"jar\"\n      },\n      \"desiredState\":\"STARTED\",\n      \"configuration\":{\n         \"mule.agent.application.properties.service\":{\n            \"properties\":{\n               \"mule.env\":\"dev\",\n               \"name\":\"none\",\n               \"key\":\"12345\"\n            },\n            \"applicationName\":\"{{applicationName}}\"\n         }\n      }\n   },\n   \"target\":{\n      \"targetId\":\"{{targetId}}\",\n      \"provider\":\"MC\",\n      \"deploymentSettings\":{\n         \"runtimeVersion\":\"4.2.1:v1.2.19\",\n         \"replicationFactor\":2,\n         \"memoryReserved\":\"3000Mi\",\n         \"memoryMax\":\"3000Mi\",\n         \"cpuReserved\":\"500m\",\n         \"cpuMax\":\"500m\",\n         \"publicUrl\":\"https://{{RTFCNAME}}/{{applicationName}}\",\n         \"lastMileSecurity\":false,\n         \"clusteringEnabled\":false\n      }\n   }\n}"
+				},
+				"url": {
+					"raw": "https://anypoint.mulesoft.com/hybrid/api/v2/organizations/{{orgId}}/environments/{{envId}}/deployments/{{deploymentId}}",
+					"protocol": "https",
+					"host": [
+						"anypoint",
+						"mulesoft",
+						"com"
+					],
+					"path": [
+						"hybrid",
+						"api",
+						"v2",
+						"organizations",
+						"{{orgId}}",
+						"environments",
+						"{{envId}}",
+						"deployments",
+						"{{deploymentId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "9. Query Asset",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"query\":\"{assets(asset:{groupId: \\\"{{orgId}}\\\",assetId: \\\"{{applicationName}}\\\"}){groupId assetId version}}\"}"
+				},
+				"url": {
+					"raw": "https://anypoint.mulesoft.com/graph/api/v1/graphql",
+					"protocol": "https",
+					"host": [
+						"anypoint",
+						"mulesoft",
+						"com"
+					],
+					"path": [
+						"graph",
+						"api",
+						"v1",
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "10. Query Asset and Version",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"query\":\"{assets(asset:{groupId: \\\"{{orgId}}\\\",assetId: \\\"{{applicationName}}\\\", version: \\\"{{applicationVersion}}\\\"}){groupId assetId version}}\"}"
+				},
+				"url": {
+					"raw": "https://anypoint.mulesoft.com/graph/api/v1/graphql",
+					"protocol": "https",
+					"host": [
+						"anypoint",
+						"mulesoft",
+						"com"
+					],
+					"path": [
+						"graph",
+						"api",
+						"v1",
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "11. Exchange Asset",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					},
+					{
+						"key": "X-Delete-Type",
+						"value": "hard-delete",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://anypoint.mulesoft.com/exchange/api/v1/organizations/{{orgId}}/assets/{{orgId}}/{{applicationName}}/{{applicationVersion}}",
+					"protocol": "https",
+					"host": [
+						"anypoint",
+						"mulesoft",
+						"com"
+					],
+					"path": [
+						"exchange",
+						"api",
+						"v1",
+						"organizations",
+						"{{orgId}}",
+						"assets",
+						"{{orgId}}",
+						"{{applicationName}}",
+						"{{applicationVersion}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "f712997f-f6bb-421f-ac24-1d0750fb3b93",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "a1696647-4f63-4315-9e98-e40cbdf7975f",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
